@@ -6,7 +6,7 @@ var coordless = loadMarkers();
 coordless.forEach((org) => console.log(`No coords for ${org.NAME}`));
 console.log(`There are ${coordless.length} organizations without coords`);
 
-addGeo(zips, getZipStyle())
+addGeo(testData, getZipStyle())
 
 // initialize map with tile layer
 // http://leaflet-extras.github.io/leaflet-providers/preview/
