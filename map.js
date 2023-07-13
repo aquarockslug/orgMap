@@ -6,7 +6,11 @@ var coordless = loadMarkers();
 coordless.forEach((org) => console.log(`No coords for ${org.NAME}`));
 console.log(`There are ${coordless.length} organizations without coords`);
 
-addGeo(testData, getZipStyle())
+
+console.log(testData)
+testData.features.forEach((feature) => {
+  addGeo(feature, getStyle(feature))
+})
 
 // initialize map with tile layer
 // http://leaflet-extras.github.io/leaflet-providers/preview/
@@ -48,12 +52,24 @@ function addGeo(data, style) {
     }).addTo(map)
 }
 
-// returns the default style for zips
-function getZipStyle() {
+function getStyle(feature) {
     return {
-        "color": "#046B99",
-        "weight": 1,
-        "opacity": 0.7,
-        "fillOpacity": 0
+      fillColor: getColor(feature.properties.DATA),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
     };
+}
+
+function getColor(d) {
+    return d > 1000 ? '#800026' :
+        d > 500 ? '#BD0026' :
+        d > 200 ? '#E31A1C' :
+        d > 100 ? '#FC4E2A' :
+        d > 50 ? '#FD8D3C' :
+        d > 20 ? '#FEB24C' :
+        d > 10 ? '#FED976' :
+        '#FFEDA0';
 }

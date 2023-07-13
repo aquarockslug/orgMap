@@ -1,4 +1,5 @@
 import json
+import random
 
 OUTPUT_FILENAME = 'testData'
 ZIP_PROP_NAME = 'ZCTA5CE10'
@@ -11,7 +12,7 @@ def main():
 
     for feature in zip_data['features']:
         props = feature['properties']
-        props['DATA'] = '123456789'
+        props['DATA'] = random.randint(0, 2000)
 
     print(key_str(zip_data))
     print(prop_str(zip_data, 'DATA', 10))
@@ -20,6 +21,7 @@ def main():
         out.write(f'{OUTPUT_FILENAME} = ')
         out.write(json.dumps(zip_data))
 
+    # create map.html file?
 
 def load_json() -> dict:
     with open('wi.json', 'r', encoding='UTF-8') as file:
