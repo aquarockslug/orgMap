@@ -1,39 +1,60 @@
 import json
 import random
 
-OUTPUT_FILENAME = 'testData'
-ZIP_PROP_NAME = 'ZCTA5CE10'
+OUTPUT_FILENAME = "testData"
+ZIP_PROP_NAME = "ZCTA5CE10"
+ZIP_DATA_JSON_FILENAME = "wi"
 
 
 def main():
-    zip_data = load_json()
+    """main"""
+    zip_data = load_json(f"{ZIP_DATA_JSON_FILENAME}.json")
+    add_input_data(zip_data)
+    summarize(zip_data)
+    write(zip_data)
 
-    # create print_prop + zip_data curry function?
 
-    for feature in zip_data['features']:
-        props = feature['properties']
-        props['DATA'] = random.randint(0, 2000)
-
-    print(key_str(zip_data))
-    print(prop_str(zip_data, 'DATA', 10))
-
-    with open(f'{OUTPUT_FILENAME}.js', 'w', encoding='UTF-8') as out:
-        out.write(f'{OUTPUT_FILENAME} = ')
-        out.write(json.dumps(zip_data))
-
-    # create map.html file?
-
-def load_json() -> dict:
-    with open('wi.json', 'r', encoding='UTF-8') as file:
+def load_json(filename) -> dict:
+    """returns data loaded from a json file"""
+    with open(filename, "r", encoding="UTF-8") as file:
         return json.load(file)
 
 
+def add_input_data(data):
+    """add input data to geographic zipcode data"""
+    for feature in data["features"]:
+        props = feature["properties"]
+        props["DATA"] = get_data(props[ZIP_PROP_NAME])
+
+
+def get_data(zipcode) -> int:
+    """get the correct piece of data to display for the zipcode"""
+    # TODO: get correct data and normalize it
+    input_data = random.randint(1, 100)
+    return input_data
+
+
+def write(data):
+    """create the output file"""
+    with open(f"{OUTPUT_FILENAME}.js", "w", encoding="UTF-8") as out:
+        out.write(f"{OUTPUT_FILENAME} = ")
+        out.write(json.dumps(data))
+
+
+def summarize(data):
+    """summarize data"""
+    print(f"KEYS:\n{key_str(data)}\n")
+    print(f'DATA:\n{prop_str(data, "DATA")}')
+
+
 def key_str(data: dict) -> str:
-    return ', '.join(data['features'][0]['properties'].keys())
+    """returns a string of the dictonary keys"""
+    return ", ".join(data["features"][0]["properties"].keys())
 
 
-def prop_str(data: dict, prop: str, count: int) -> str:
-    new_prop_str = ''
+def prop_str(data: dict, prop: str, count: int = 10) -> str:
+    """returns a string of the given property"""
+    new_prop_str = ""
     for i, feature in enumerate(data["features"]):
         new_prop_str += f'{feature["properties"][prop]}, '
         if i == count:
@@ -41,5 +62,5 @@ def prop_str(data: dict, prop: str, count: int) -> str:
     return new_prop_str[: len(new_prop_str) - 2]
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

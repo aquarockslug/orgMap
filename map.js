@@ -6,8 +6,6 @@ var coordless = loadMarkers();
 coordless.forEach((org) => console.log(`No coords for ${org.NAME}`));
 console.log(`There are ${coordless.length} organizations without coords`);
 
-
-console.log(testData)
 testData.features.forEach((feature) => {
   addGeo(feature, getStyle(feature))
 })
@@ -15,18 +13,22 @@ testData.features.forEach((feature) => {
 // initialize map with tile layer
 // http://leaflet-extras.github.io/leaflet-providers/preview/
 function loadMap(mapType) {
+    tileURL = null
     switch (mapType) {
-        case "humanitarian":
-            tilesURL = "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png";
+        case 'humanitarian':
+            tilesURL = 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
             break;
+        case 'standard':
+            tilesURL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         default:
-            tilesURL = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            break;
     }
 
     let newMap = new L.map("map", {
         center: initCoords,
         zoom: 8
     });
+    if tilesURL === null
     newMap.addLayer(new L.TileLayer(tilesURL));
     return newMap;
 }
@@ -64,12 +66,12 @@ function getStyle(feature) {
 }
 
 function getColor(d) {
-    return d > 1000 ? '#800026' :
-        d > 500 ? '#BD0026' :
-        d > 200 ? '#E31A1C' :
-        d > 100 ? '#FC4E2A' :
-        d > 50 ? '#FD8D3C' :
-        d > 20 ? '#FEB24C' :
-        d > 10 ? '#FED976' :
+    return d > 95 ? '#800026' :
+        d > 90 ? '#BD0026' :
+        d > 75 ? '#E31A1C' :
+        d > 60 ? '#FC4E2A' :
+        d > 45 ? '#FD8D3C' :
+        d > 30 ? '#FEB24C' :
+        d > 15 ? '#FED976' :
         '#FFEDA0';
 }
