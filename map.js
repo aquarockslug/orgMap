@@ -7,7 +7,7 @@ coordless.forEach((org) => console.log(`No coords for ${org.NAME}`));
 console.log(`There are ${coordless.length} organizations without coords`);
 
 testData.features.forEach((feature) => {
-  addGeo(feature, getStyle(feature))
+    addGeo(feature, getStyle(feature))
 })
 
 // initialize map with tile layer
@@ -28,8 +28,8 @@ function loadMap(mapType) {
         center: initCoords,
         zoom: 8
     });
-    if tilesURL === null
-    newMap.addLayer(new L.TileLayer(tilesURL));
+    if (tilesURL != null)
+        newMap.addLayer(new L.TileLayer(tilesURL));
     return newMap;
 }
 
@@ -56,7 +56,7 @@ function addGeo(data, style) {
 
 function getStyle(feature) {
     return {
-      fillColor: getColor(feature.properties.DATA),
+        fillColor: getColor(feature.properties.DATA),
         weight: 2,
         opacity: 1,
         color: 'white',
