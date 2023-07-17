@@ -56,7 +56,7 @@ function addGeo(data, style) {
 
 function getStyle(feature) {
     return {
-        fillColor: getColor(feature.properties.DATA),
+        fillColor: getColor2(feature.properties.DATA),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -73,5 +73,16 @@ function getColor(d) {
         d > 45 ? '#FD8D3C' :
         d > 30 ? '#FEB24C' :
         d > 15 ? '#FED976' :
+        '#FFEDA0';
+}
+
+function getColor2(d) {
+    return d > 10000 ? '#800026' :
+        d > 9000 ? '#BD0026' :
+        d > 7500 ? '#E31A1C' :
+        d > 6000 ? '#FC4E2A' :
+        d > 4500 ? '#FD8D3C' :
+        d > 3000 ? '#FEB24C' :
+        d > 1500 ? '#FED976' :
         '#FFEDA0';
 }

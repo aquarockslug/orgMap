@@ -2,6 +2,7 @@ import json
 import random
 import pandas as pd
 
+DATA_FILENAME = "income.csv"
 OUTPUT_FILENAME = "testData"
 ZIP_PROP_NAME = "ZCTA5CE10"
 ZIP_DATA_JSON_FILENAME = "wi"
@@ -9,24 +10,13 @@ ZIP_DATA_JSON_FILENAME = "wi"
 
 def main():
     """main"""
-    data_in = pd.read_csv("income.csv")
+    global database
+    database = load_database(DATA_FILENAME)
+    zip_data = load_json(f"{ZIP_DATA_JSON_FILENAME}.json")
 
-    zData = set()
-    for z in data_in["zip"]:
-        if pd.notna(z):
-            zData.add(int(z))
-
-    inData = dict()
-    for z in zData:
-        if (len(str(z)) == 5):
-            inData[str(z)] = data_in[data_in["zip"] == z]["count"]
-
-    print(inData["54956"].values[1])
-
-    # zip_data = load_json(f"{ZIP_DATA_JSON_FILENAME}.json")
-    # add_input_data(zip_data)
-    # summarize(zip_data)
-    # write(zip_data)
+    add_input_data(zip_data)
+    summarize(zip_data)
+    write(zip_data)
 
 
 def load_json(filename) -> dict:
@@ -41,6 +31,21 @@ def load_csv(filename):
         return pd.read_csv(file.read())
 
 
+def load_database(filename) -> dict:
+    data_in = pd.read_csv(filename)
+    zData = set()
+    for z in data_in["zip"]:
+        if pd.notna(z):
+            zData.add(int(z))
+
+    database = dict()
+    for z in zData:
+        if (len(str(z)) == 5):
+            database[str(z)] = data_in[data_in["zip"] == z]["count"]
+
+    return database
+
+
 def add_input_data(data):
     """add input data to geographic zipcode data"""
     for feature in data["features"]:
@@ -50,9 +55,12 @@ def add_input_data(data):
 
 def get_data(zipcode) -> int:
     """get the correct piece of data to display for the zipcode"""
-    # TODO: get correct data and normalize it
-    input_data = random.randint(1, 100)
-    return input_data
+    if str(zipcode) in database:
+        input_data = database[str(zipcode)].values[6]
+        return input_data
+    else:
+        print(f"{zipcode} not found in database")
+        return 0
 
 
 def write(data):
