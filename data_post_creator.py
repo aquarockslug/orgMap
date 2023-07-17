@@ -1,5 +1,6 @@
 import json
 import random
+import pandas as pd
 
 OUTPUT_FILENAME = "testData"
 ZIP_PROP_NAME = "ZCTA5CE10"
@@ -8,16 +9,36 @@ ZIP_DATA_JSON_FILENAME = "wi"
 
 def main():
     """main"""
-    zip_data = load_json(f"{ZIP_DATA_JSON_FILENAME}.json")
-    add_input_data(zip_data)
-    summarize(zip_data)
-    write(zip_data)
+    data_in = pd.read_csv("income.csv")
+
+    zData = set()
+    for z in data_in["zip"]:
+        if pd.notna(z):
+            zData.add(int(z))
+
+    inData = dict()
+    for z in zData:
+        if (len(str(z)) == 5):
+            inData[str(z)] = data_in[data_in["zip"] == z]["count"]
+
+    print(inData["54956"].values[1])
+
+    # zip_data = load_json(f"{ZIP_DATA_JSON_FILENAME}.json")
+    # add_input_data(zip_data)
+    # summarize(zip_data)
+    # write(zip_data)
 
 
 def load_json(filename) -> dict:
     """returns data loaded from a json file"""
     with open(filename, "r", encoding="UTF-8") as file:
         return json.load(file)
+
+
+def load_csv(filename):
+    """returns data loaded from a csv file"""
+    with open(filename, "r", encoding="UTF-8") as file:
+        return pd.read_csv(file.read())
 
 
 def add_input_data(data):

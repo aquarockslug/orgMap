@@ -13,7 +13,7 @@ testData.features.forEach((feature) => {
 // initialize map with tile layer
 // http://leaflet-extras.github.io/leaflet-providers/preview/
 function loadMap(mapType) {
-    tileURL = null
+    tilesURL = null
     switch (mapType) {
         case 'humanitarian':
             tilesURL = 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
