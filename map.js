@@ -5,8 +5,8 @@ var coordless = loadMarkers();
 
 coordless.forEach((org) => console.log(`No coords for ${org.NAME}`));
 console.log(`There are ${coordless.length} organizations without coords`);
-
-testData.features.forEach((feature) => {
+console.log(testData)
+testData.forEach((feature) => {
     addGeo(feature, getStyle(feature))
 })
 
@@ -36,7 +36,7 @@ function loadMap(mapType) {
 // adds markers to map and returns an array of organizations that could not be marked
 function loadMarkers() {
     coordless = [];
-    data.forEach((org) => {
+    marker_data.forEach((org) => {
         if (org.LAT && org.LNG) {
             var marker = L.marker([org.LAT, org.LNG]);
             marker.bindPopup(`${org.NAME}\n${org.ZIP}`).openPopup();
@@ -60,8 +60,8 @@ function getStyle(feature) {
         weight: 2,
         opacity: 1,
         color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
+        dashArray: '4',
+        fillOpacity: '0.8'
     };
 }
 

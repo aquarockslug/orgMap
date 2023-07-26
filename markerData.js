@@ -1,4 +1,4 @@
-data = [
+marker_data = [
     {"NAME":"KRyanCreative LLC","ZIP":"NO_DATA","LAT":null,"LNG":null},
     {"NAME":"DIF NY CONSTRUCTION LLC","ZIP":"11733","LAT":40.9435979,"LNG":-73.1183027},
     {"NAME":"Autonomy Institute","ZIP":"NO_DATA","LAT":53.9477221,"LNG":-1.0267444},
@@ -678,4 +678,4 @@ data = [
     {"NAME":"Arizona Western College","ZIP":"85365","LAT":32.6886907,"LNG":-114.4950487},
     {"NAME":"Maui Economic Development Board Inc.","ZIP":"96753","LAT":20.7505059,"LNG":-156.4380128},
     {"NAME":"Hawaii Island Economic Development Board (HIEDB)","ZIP":"96813","LAT":21.3071401,"LNG":-157.8630366},
-    ]
+]
