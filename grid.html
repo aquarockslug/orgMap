@@ -1,0 +1,110 @@
+<html>
+<head>
+  <style>
+    :root {
+      --theme-green: #008763;
+      --theme-green-low-sat: #518779;
+      --grid-border: 2px inset #008763;
+      --label-font-size: 32px;
+      --VP-color: #91C8ED;
+      --CE-color: #B7D98E;
+      --AR-color: #F5C375;
+      --LC-color: #EA875D;
+    }
+    body {
+      font-family: Arial;
+    }
+    #container {}
+    #labelGrid {
+      height: 100%;
+      width: 100%;
+      min-width: 512px;
+
+      display: grid;
+      grid-template-columns: repeat(4, 4fr);
+      grid-template-rows: 1fr repeat(4, 2fr);
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+    }
+    #grid {
+      display: grid;
+      grid-area: 2 / 2 / 6 / 5;
+      background-color: var(--theme-green-low-sat);
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+      margin: 12px;
+    }
+    #top {
+      grid-area: 1 / 2 / 2 / 5;
+      background-color: var(--theme-green);
+      border: var(--grid-border);
+      display: flex;
+      color: white;
+      font-size: var(--label-font-size);
+      margin: 16px;
+    }
+    #top > .cell {
+      width: 33%;
+    }
+    #left {
+      grid-area: 2 / 1 / 6 / 2;
+      background-color: var(--theme-green);
+      border: var(--grid-border);
+      display: flex;
+      flex-direction: column;
+      flex-wrap: none;
+      justify-content: space-around;
+      align-content: center;
+      color: white;
+      font-size: var(--label-font-size);
+      margin: 16px;
+    }
+    #corner { grid-area: 1 / 1 / 2 / 2; }
+    .cell {
+      display: flex;
+      align-items: center;
+      justify-self: center;
+      font-weight: bold;
+      margin: 32px;
+    }
+    .VP { color: var(--VP-color); }
+    .CE { color: var(--CE-color); }
+    .AR { color: var(--AR-color); }
+    .LC { color: var(--LC-color); }
+  </style>
+</head>
+<body>
+  <div id="container">
+  <div id="labelGrid">
+   <div id="top">
+      <div class="cell">Discovering</div>
+      <div class="cell">Developing</div>
+      <div class="cell">Doing</div>
+    </div>
+    <div id="left">
+      <div class="cell">Values & Purpose</div>
+      <div class="cell">Contexts & Enviroments</div>
+      <div class="cell">Assets & Roles</div>
+      <div class="cell">Links & Connections</div>
+    </div>
+    <div id="grid">
+      <div class="cell VP">Who benefits from a strong ecosystem? What are their jobs, pains, and gains? What is the intended impact?</div>
+      <div class="cell VP">How might we create value for intended beneficiaries?</div>
+      <div class="cell VP">What value-creating products, services, or initiatives will we produce?</div>
+      <div class="cell CE">What are the cultural, political, policy, geographic, institutional, and other factors affecting our ecosystem?</div>
+      <div class="cell CE">How might we collaborate to create and evolve the most supportive contextual factors for our ecosystem?</div>
+      <div class="cell CE">What efforts will we collaboratively undertake to re-shape existing enviromental factos or to create new ones?</div>
+      <div class="cell AR">What are the roles required for a strong ecosystem? Whoe plays them? What assets do we have? Who can share them?</div>
+      <div class="cell AR">How might we build on existing assets and roles and address gaps?</div>
+      <div class="cell AR">What activities will we undertake to help us address gaps and build on existing assets and roles?</div>
+      <div class="cell LC">What kinds of linkages and relationships are required between and amoun assets?</div>
+      <div class="cell LC">How might we encourage and facilitate new linkages between and among assets and roles?</div>
+      <div class="cell LC">What new partnerships and collaboration will we implement to better connect, align, and leverage assets and roles?</div>
+    </div>
+    <div id="corner"></div>
+  </div>
+  <div>
+</body>
+</html>

@@ -6,6 +6,7 @@ OUTPUT_FILENAME = "testData"
 MARKER_FILENAME = "markerData.json"
 ZIP_PROP_NAME = "ZCTA5CE10"
 ZIP_DATA_JSON_FILENAME = "wi"
+ROUND_COORDS = 3
 
 
 def main():
@@ -24,6 +25,8 @@ def main():
     all_zip_data = load_json(f"{ZIP_DATA_JSON_FILENAME}.json")
     marker_zip_data = list(filter(is_marker_zip, all_zip_data["features"]))
 
+    marker_zip_data = round_coordinates(marker_zip_data, ROUND_COORDS)
+
     # combine zip data and input data
     add_input_data(marker_zip_data)
 
@@ -31,6 +34,19 @@ def main():
     summarize(marker_zip_data)
     write(marker_zip_data)
 
+# round coordinates
+def round_coordinates(data, precision):
+    def apply(item, fun):
+        if isinstance(item, list):
+            return [apply(x, fun) for x in item]
+        else:
+            return fun(item)
+
+    for i, feature in enumerate(data):
+         data[i]["geometry"]["coordinates"] = apply(
+            feature["geometry"]["coordinates"], lambda x: round(x, precision)
+        )
+    return data
 
 def is_marker_zip(zip_data):
     return True if zip_data["properties"][ZIP_PROP_NAME] in marker_zip_set else False
@@ -89,9 +105,10 @@ def write(data):
 
 def summarize(data):
     """summarize data"""
-    print(f'\nKEYS:\n{key_str(data)}\n')
+    print(f"\nKEYS:\n{key_str(data)}\n")
     print(f'DATA:\n{prop_str(data, "DATA")}\n')
-    print(f'LENGTH:\n{len(data)}\n')
+    print(f'COORDS:\n{data[0]["geometry"]["coordinates"][0][:5]}\n')
+    print(f"LENGTH:\n{len(data)}\n")
 
 
 def key_str(data: dict) -> str:
