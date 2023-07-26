@@ -5,12 +5,24 @@ DATA_FILENAME = "income.csv"
 OUTPUT_FILENAME = "testData"
 MARKER_FILENAME = "markerData.json"
 ZIP_PROP_NAME = "ZCTA5CE10"
-ZIP_DATA_JSON_FILENAME = "wi"
-ROUND_COORDS = 3
-
+ROUND_COORDS = 4
 
 def main():
     """main"""
+    state_zips_filenames = ["../State-zip-code-GeoJSON/wi_wisconsin_zip_codes_geo.min.json",
+                            "../State-zip-code-GeoJSON/il_illinois_zip_codes_geo.min.json"]
+
+    all_states = []
+    for zip_data_filename in state_zips_filenames:
+        state_features = create_features(zip_data_filename)
+        summarize(state_features)
+        # write(state_features, zip_data_filename.split('/')[-1])
+        all_states.append(state_features)
+
+    write(all_states[0] + all_states[1], "testData")
+
+def create_features(filename):
+    """creates a list of geoJSON featuress"""
     # get input data
     global database
     database = load_database(DATA_FILENAME)
@@ -21,35 +33,34 @@ def main():
     for marker in load_json(MARKER_FILENAME)["marker_data"]:  # from markerData.js
         marker_zip_set.add(marker["ZIP"])
 
-    # remove zips that don't contain markers
-    all_zip_data = load_json(f"{ZIP_DATA_JSON_FILENAME}.json")
-    marker_zip_data = list(filter(is_marker_zip, all_zip_data["features"]))
-
-    marker_zip_data = round_coordinates(marker_zip_data, ROUND_COORDS)
+    # remove zips that don't include markers then round remaining coordinates
+    marker_zips = round_coordinates(get_marker_zips(filename), ROUND_COORDS)
 
     # combine zip data and input data
-    add_input_data(marker_zip_data)
+    add_input_data(marker_zips)
 
-    # output
-    summarize(marker_zip_data)
-    write(marker_zip_data)
+    return marker_zips
+
+def get_marker_zips(zip_data_filename) -> list:
+    """remove geoJSON features with zips that are not in marker_zip_set"""
+    def is_marker_zip(zip_data) -> bool:
+        return True if zip_data["properties"][ZIP_PROP_NAME] in marker_zip_set else False
+    return list(filter(is_marker_zip, load_json(f"{zip_data_filename}")["features"]))
+
 
 # round coordinates
-def round_coordinates(data, precision):
+def round_coordinates(data, precision) -> list:
     def apply(item, fun):
         if isinstance(item, list):
             return [apply(x, fun) for x in item]
-        else:
-            return fun(item)
+        return fun(item)
 
     for i, feature in enumerate(data):
-         data[i]["geometry"]["coordinates"] = apply(
+        data[i]["geometry"]["coordinates"] = apply(
             feature["geometry"]["coordinates"], lambda x: round(x, precision)
         )
     return data
 
-def is_marker_zip(zip_data):
-    return True if zip_data["properties"][ZIP_PROP_NAME] in marker_zip_set else False
 
 
 def load_json(filename) -> dict:
@@ -96,10 +107,10 @@ def get_data(zipcode) -> int:
         return 0
 
 
-def write(data):
+def write(data, output_filename):
     """create the output file"""
-    with open(f"{OUTPUT_FILENAME}.js", "w", encoding="UTF-8") as out:
-        out.write(f"{OUTPUT_FILENAME} = ")
+    with open(f"{output_filename}.js", "w", encoding="UTF-8") as out:
+        out.write(f"testData = ")
         out.write(json.dumps(data))
 
 
